@@ -5,6 +5,7 @@ import { authService } from '../services/auth';
 import Sidebar from './Sidebar';
 import ReportsBilling from './Reports';
 import CustomerManagement from './CustomerManagement';
+import CompanySettings from './CompanySettings';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -66,36 +67,11 @@ const AdminDashboard = () => {
   const totalIncome = 320000;
   const profit = totalIncome - totalExpenses;
 
-  return (
-    <div className="admin-dashboard">
-      {/* Fixed Sidebar */}
-      <Sidebar 
-        activeSection={activeSection} 
-        setActiveSection={setActiveSection}
-        onLogout={handleLogout}
-      />
-
-      {/* Main Content */}
-      <div className="main-content">
-        {/* Header */}
-        <header className="dashboard-header">
-          <div className="header-left">
-            <h1>{getSectionTitle(activeSection)}</h1>
-            <p>Welcome back, Admin</p>
-          </div>
-          <div className="header-right">
-            <div className="admin-user">
-              <span className="user-avatar">A</span>
-              <span className="user-name">Admin</span>
-            </div>
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          </div>
-        </header>
-
-        {/* Dashboard Section */}
-        {activeSection === 'dashboard' && (
+  // Render content based on active section
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return (
           <div className="content-area">
             <div className="stats-grid">
               <div className="stat-card">
@@ -182,10 +158,10 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
-        )}
+        );
 
-        {/* Employee Management Section */}
-        {activeSection === 'employees' && (
+      case 'employees':
+        return (
           <div className="content-area">
             {/* Search and Filters */}
             <div className="search-section">
@@ -293,21 +269,56 @@ const AdminDashboard = () => {
               </table>
             </div>
           </div>
-        )}
+        );
 
-        {/* Reports Section */}
-        {activeSection === 'reports' && <ReportsBilling />}
+      case 'reports':
+        return <ReportsBilling />;
 
-        {/* Customer Management Section */}
-        {activeSection === 'customers' && <CustomerManagement />}
+      case 'customers':
+        return <CustomerManagement />;
 
-        {/* Other Sections */}
-        {!['dashboard', 'employees', 'reports', 'customers'].includes(activeSection) && (
+      case 'settings':
+        return <CompanySettings />;
+
+      default:
+        return (
           <div className="content-area">
-            <h2>{getSectionTitle(activeSection)}</h2>
-            <p>This section is under development.</p>
+            
           </div>
-        )}
+        );
+    }
+  };
+
+  return (
+    <div className="admin-dashboard">
+      {/* Fixed Sidebar */}
+      <Sidebar 
+        activeSection={activeSection} 
+        setActiveSection={setActiveSection}
+        onLogout={handleLogout}
+      />
+
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Header */}
+        <header className="dashboard-header">
+          <div className="header-left">
+            <h1>{getSectionTitle(activeSection)}</h1>
+            
+          </div>
+          <div className="header-right">
+            <div className="admin-user">
+              <span className="user-avatar">A</span>
+              <span className="user-name">Admin</span>
+            </div>
+            <button onClick={handleLogout} className="logout-btn">
+              Logout
+            </button>
+          </div>
+        </header>
+
+        {/* Render Content Based on Active Section */}
+        {renderContent()}
       </div>
     </div>
   );
