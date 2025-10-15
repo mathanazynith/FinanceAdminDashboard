@@ -1,7 +1,7 @@
 import React from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
+const Sidebar = ({ activeSection, setActiveSection }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'employees', label: 'Employee Management', icon: '👥' },
@@ -9,7 +9,7 @@ const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
     { id: 'salary', label: 'Salary Management', icon: '💰' },
     { id: 'transactions', label: 'In/Out Transactions', icon: '🔄' },
     { id: 'reports', label: 'Reports & Billing', icon: '📈' },
-    { id: 'support', label: 'Help & Support', icon: '❓' },
+ 
     { id: 'settings', label: 'Settings', icon: '⚙️' }
   ];
 
@@ -34,17 +34,7 @@ const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
         ))}
       </nav>
 
-      <div className="sidebar-footer">
-        <div className="weather-alert">
-          <span className="alert-icon">☀️</span>
-          <span>High UV</span>
-          <span className="new-badge">New</span>
-        </div>
-        <button className="logout-btn" onClick={onLogout}>
-          <span className="logout-icon">🚪</span>
-          <span>Logout</span>
-        </button>
-      </div>
+      {/* Removed the sidebar-footer section containing logout button */}
     </div>
   );
 };

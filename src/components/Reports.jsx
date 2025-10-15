@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Reports.css';
 
 const ReportsBilling = () => {
@@ -7,7 +7,7 @@ const ReportsBilling = () => {
   const [itemDescription, setItemDescription] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [invoiceNumber, setInvoiceNumber] = useState('INV-' + Date.now());
+  const [invoiceNumber, setInvoiceNumber] = useState('');
   const [invoiceDate, setInvoiceDate] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [taxRate, setTaxRate] = useState(0);
@@ -19,11 +19,11 @@ const ReportsBilling = () => {
   const [transactionNumber, setTransactionNumber] = useState('');
   const [transactionProof, setTransactionProof] = useState(null);
   const [invoices, setInvoices] = useState([
-    { id: 1, number: '5146846548', customer: 'Jane Cooper', date: '2/19/21', status: 'Paid', amount: '500.00' },
-    { id: 2, number: '5467319467', customer: 'Wade Warren', date: '5/7/16', status: 'Paid', amount: '500.00' },
-    { id: 3, number: '1345705945', customer: 'Esther Howard', date: '9/18/16', status: 'Unpaid', amount: '500.00' },
-    { id: 4, number: '7894561230', customer: 'Robert Fox', date: '1/15/23', status: 'Unpaid', amount: '750.00' },
-    { id: 5, number: '3216549870', customer: 'Darlene Robertson', date: '3/22/23', status: 'Paid', amount: '320.00' },
+    { id: 1, number: 'INV001', customer: 'Jane Cooper', date: '2/19/21', status: 'Paid', amount: '500.00' },
+    { id: 2, number: 'INV002', customer: 'Wade Warren', date: '5/7/16', status: 'Paid', amount: '500.00' },
+    { id: 3, number: 'INV003', customer: 'Esther Howard', date: '9/18/16', status: 'Unpaid', amount: '500.00' },
+    { id: 4, number: 'INV004', customer: 'Robert Fox', date: '1/15/23', status: 'Unpaid', amount: '750.00' },
+    { id: 5, number: 'INV005', customer: 'Darlene Robertson', date: '3/22/23', status: 'Paid', amount: '320.00' },
   ]);
 
   // Sample data
@@ -39,6 +39,29 @@ const ReportsBilling = () => {
     EUR: '€',
     INR: '₹'
   };
+
+  // Function to generate the next invoice number
+  const generateNextInvoiceNumber = () => {
+    // Get all existing invoice numbers
+    const existingNumbers = invoices.map(inv => {
+      const num = inv.number.replace('INV', '');
+      return parseInt(num, 10);
+    });
+    
+    // Find the highest number
+    const highestNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) : 0;
+    
+    // Generate next number with leading zeros
+    const nextNumber = highestNumber + 1;
+    return `INV${nextNumber.toString().padStart(3, '0')}`;
+  };
+
+  // Initialize invoice number when component mounts or when modal opens
+  useEffect(() => {
+    if (showInvoiceModal) {
+      setInvoiceNumber(generateNextInvoiceNumber());
+    }
+  }, [showInvoiceModal, invoices]);
 
   // Function to check invoice status (overdue check)
   const checkInvoiceStatus = (invoice) => {
@@ -105,6 +128,19 @@ const ReportsBilling = () => {
     if (selectedCustomer && invoiceItems.length > 0 && invoiceDate && dueDate) {
       const customer = customers.find(c => c.id === parseInt(selectedCustomer));
       
+      // Create new invoice object
+      const newInvoice = {
+        id: invoices.length + 1,
+        number: invoiceNumber.replace('INV', ''),
+        customer: customer.name,
+        date: invoiceDate,
+        status: 'Unpaid',
+        amount: getInvoiceTotal().toFixed(2)
+      };
+
+      // Add to invoices list
+      setInvoices([...invoices, newInvoice]);
+      
       // Check if due date has passed
       const today = new Date();
       const due = new Date(dueDate);
@@ -122,7 +158,6 @@ const ReportsBilling = () => {
       setTaxRate(0);
       setCurrency('USD');
       setShowItemsTable(false);
-      setInvoiceNumber('INV-' + Date.now());
       setShowInvoiceModal(false);
     } else {
       alert('Please select a customer, add at least one item, and set invoice/due dates');
@@ -143,7 +178,6 @@ const ReportsBilling = () => {
     setTaxRate(0);
     setCurrency('USD');
     setShowItemsTable(false);
-    setInvoiceNumber('INV-' + Date.now());
   };
 
   const openPaymentModal = (invoice) => {
@@ -171,7 +205,7 @@ const ReportsBilling = () => {
         : inv
     ));
 
-    alert(`Payment confirmed for invoice INV-${selectedInvoice.number}`);
+    alert(`Payment confirmed for invoice ${selectedInvoice.number}`);
     closePaymentModal();
   };
 
@@ -190,30 +224,29 @@ const ReportsBilling = () => {
 
   return (
     <div className="reports-billing-container">
-      {/* Header */}
+      {/* Header with Generate Invoice Button */}
       <div className="reports-header">
-        
-        
-        
-        {/* Invoice Generation Button */}
-        <button className="generate-invoice-main-btn" onClick={openInvoiceModal}>
-          Generate New Invoice
-        </button>
+        <div className="header-content">
+          <div className="header-text">
+            
+          </div>
+          <button className="generate-invoice-main-btn" onClick={openInvoiceModal}>
+            Generate New Invoice
+          </button>
+        </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="main-content-grid">
-        {/* Left Column */}
-        <div className="left-column">
-          {/* Profit & Loss Report */}
-          <div className="report-card">
-            <div className="card-header">
+      {/* Profit & Loss Report - Single Line */}
+      <div className="profit-loss-section">
+        <div className="report-card profit-loss-card">
+          <div className="profit-loss-header">
+            <div className="profit-loss-title">
               <h3>Profit & Loss Report</h3>
               <p>Comprehensive financial performance overview</p>
             </div>
             
-            <div className="form-section">
-              <div className="form-field">
+            <div className="profit-loss-content">
+              <div className="date-range-section">
                 <label>Date Range</label>
                 <div className="date-range">
                   <input type="text" placeholder="dd-mm-yyyy" className="date-input" />
@@ -229,83 +262,82 @@ const ReportsBilling = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Right Column */}
-        <div className="right-column">
-          {/* Invoice History */}
-          <div className="report-card invoice-history-card">
-            <div className="card-header">
-              <h3>Invoice History</h3>
-              <p>All generated invoices</p>
-            </div>
-            
-            <div className="invoice-history-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Invoice Number</th>
-                    <th>Customer</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoices.map(invoice => {
-                    const status = checkInvoiceStatus(invoice);
-                    return (
-                      <tr key={invoice.id}>
-                        <td className="invoice-number">INV-{invoice.number}</td>
-                        <td className="customer-info">
-                          <div className="customer-name">{invoice.customer}</div>
-                        </td>
-                        <td>{invoice.date}</td>
-                        <td>
-                          <span className={`status-badge ${status}`}>
-                            {status === 'overdue' ? 'Overdue' : invoice.status}
-                          </span>
-                        </td>
-                        <td className="amount">${invoice.amount}</td>
-                        <td>
-                          <div className="action-buttons">
-                            <button className="action-btn download" title="Download">
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                              </svg>
-                            </button>
-                            {(status === 'unpaid' || status === 'overdue') && (
-                              <button 
-                                className="action-btn verify-payment"
-                                onClick={() => openPaymentModal(invoice)}
-                                title="Verify Payment"
-                              >
-                                Verify Payment
-                              </button>
-                            )}
+      {/* Invoice History - Full Width */}
+      <div className="invoice-history-section">
+        <div className="report-card invoice-history-card">
+          <div className="card-header">
+            <h3>Invoice History</h3>
+            <p>All generated invoices</p>
+          </div>
+          
+          <div className="invoice-history-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Invoice Number</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoices.map(invoice => {
+                  const status = checkInvoiceStatus(invoice);
+                  return (
+                    <tr key={invoice.id}>
+                      <td className="invoice-number">{invoice.number}</td>
+                      <td className="customer-info">
+                        <div className="customer-name">{invoice.customer}</div>
+                      </td>
+                      <td>{invoice.date}</td>
+                      <td>
+                        <span className={`status-badge ${status}`}>
+                          {status === 'overdue' ? 'Overdue' : invoice.status}
+                        </span>
+                      </td>
+                      <td className="amount">${invoice.amount}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <button className="action-btn download" title="Download">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                          </button>
+                          {(status === 'unpaid' || status === 'overdue') && (
                             <button 
-                              className="action-btn delete"
-                              onClick={() => deleteInvoice(invoice.id)}
-                              title="Delete Invoice"
+                              className="action-btn verify-payment"
+                              onClick={() => openPaymentModal(invoice)}
+                              title="Verify Payment"
                             >
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M3 6h18"></path>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                <line x1="10" y1="11" x2="10" y2="17"></line>
-                                <line x1="14" y1="11" x2="14" y2="17"></line>
-                              </svg>
+                              Verify Payment
                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          )}
+                          <button 
+                            className="action-btn delete"
+                            onClick={() => deleteInvoice(invoice.id)}
+                            title="Delete Invoice"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M3 6h18"></path>
+                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                              <line x1="10" y1="11" x2="10" y2="17"></line>
+                              <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -355,7 +387,11 @@ const ReportsBilling = () => {
                         value={invoiceNumber}
                         onChange={(e) => setInvoiceNumber(e.target.value)}
                         readOnly
+                        style={{backgroundColor: '#f8fafc', color: '#64748b'}}
                       />
+                      <small style={{color: '#6b7280', fontSize: '0.75rem'}}>
+                        Auto-generated sequential number
+                      </small>
                     </div>
                   </div>
 
@@ -533,7 +569,7 @@ const ReportsBilling = () => {
                   </div>
                   
                   <button className="generate-invoice-btn" onClick={generateInvoice}>
-                    Generate Invoice
+                    Generate Invoice {invoiceNumber}
                   </button>
                 </div>
               </div>

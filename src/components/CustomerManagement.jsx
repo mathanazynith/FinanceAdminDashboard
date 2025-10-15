@@ -10,6 +10,7 @@ const CustomerManagement = () => {
   
   // Form state
   const [form, setForm] = useState({
+    customerId: '',
     name: '',
     email: '',
     phone: '',
@@ -22,6 +23,7 @@ const CustomerManagement = () => {
   const initialCustomers = [
     {
       id: 1,
+      customerId: 'CUST001',
       name: 'John Doe',
       email: 'john@example.com',
       phone: '+1 234-567-8900',
@@ -33,6 +35,7 @@ const CustomerManagement = () => {
     },
     {
       id: 2,
+      customerId: 'CUST002',
       name: 'Jane Smith',
       email: 'jane@example.com',
       phone: '+1 234-567-8901',
@@ -44,6 +47,7 @@ const CustomerManagement = () => {
     },
     {
       id: 3,
+      customerId: 'CUST003',
       name: 'Mike Johnson',
       email: 'mike@example.com',
       phone: '+1 234-567-8902',
@@ -58,6 +62,32 @@ const CustomerManagement = () => {
   useEffect(() => {
     setCustomers(initialCustomers);
   }, []);
+
+  // Function to generate the next customer ID
+  const generateNextCustomerId = () => {
+    // Get all existing customer IDs
+    const existingIds = customers.map(customer => {
+      const num = customer.customerId.replace('CUST', '');
+      return parseInt(num, 10);
+    });
+    
+    // Find the highest number
+    const highestNumber = existingIds.length > 0 ? Math.max(...existingIds) : 0;
+    
+    // Generate next number with leading zeros
+    const nextNumber = highestNumber + 1;
+    return `CUST${nextNumber.toString().padStart(3, '0')}`;
+  };
+
+  // Generate customer ID when form opens
+  useEffect(() => {
+    if (showAddForm && !editingCustomer) {
+      setForm(prevForm => ({
+        ...prevForm,
+        customerId: generateNextCustomerId()
+      }));
+    }
+  }, [showAddForm, editingCustomer, customers]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -91,6 +121,7 @@ const CustomerManagement = () => {
       
       // Reset form
       setForm({
+        customerId: '',
         name: '',
         email: '',
         phone: '',
@@ -123,6 +154,7 @@ const CustomerManagement = () => {
 
   const handleCancel = () => {
     setForm({
+      customerId: '',
       name: '',
       email: '',
       phone: '',
@@ -147,7 +179,8 @@ const CustomerManagement = () => {
     customer.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     customer.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     customer.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.phone?.includes(searchTerm)
+    customer.phone?.includes(searchTerm) ||
+    customer.customerId?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const activeCustomers = customers.filter(c => c.status === 'active').length;
@@ -194,7 +227,7 @@ const CustomerManagement = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search customers by name, email, or company..."
+              placeholder="Search customers by ID, name, email, or company..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -221,6 +254,20 @@ const CustomerManagement = () => {
             
             <form onSubmit={handleSubmit} className="customer-form">
               <div className="form-grid">
+                <div className="form-group">
+                  <label>Customer ID</label>
+                  <input
+                    type="text"
+                    name="customerId"
+                    value={form.customerId}
+                    onChange={handleChange}
+                    placeholder="Auto-generated"
+                    readOnly
+                    className="readonly-input"
+                  />
+                  <small className="field-hint">Auto-generated unique ID</small>
+                </div>
+                
                 <div className="form-group">
                   <label>Full Name *</label>
                   <input
@@ -315,6 +362,7 @@ const CustomerManagement = () => {
           <table className="customers-table">
             <thead>
               <tr>
+                <th>Customer ID</th>
                 <th>Name</th>
                 <th>Contact Info</th>
                 <th>Company</th>
@@ -327,13 +375,18 @@ const CustomerManagement = () => {
             <tbody>
               {filteredCustomers.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="empty-cell">
+                  <td colSpan="8" className="empty-cell">
                     No customers found
                   </td>
                 </tr>
               ) : (
                 filteredCustomers.map(customer => (
                   <tr key={customer.id} className="customer-row">
+                    <td>
+                      <div className="customer-id">
+                        <strong>{customer.customerId}</strong>
+                      </div>
+                    </td>
                     <td>
                       <div className="customer-info">
                         <div className="customer-name">{customer.name}</div>

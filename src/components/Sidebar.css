@@ -1,7 +1,7 @@
 .sidebar {
   width: 280px;
   height: 100vh;
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: white;
   padding: 0;
   position: fixed;
@@ -11,6 +11,7 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .company-brand {
@@ -24,6 +25,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: #f8fafc;
+  letter-spacing: -0.5px;
 }
 
 .sidebar-nav {
@@ -45,7 +47,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-align: left;
   width: 100%;
   position: relative;
@@ -54,12 +56,13 @@
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.05);
   color: #f8fafc;
+  padding-left: 24px;
 }
 
 .nav-item.active {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  border-right: 3px solid #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border-right: 4px solid #60a5fa;
 }
 
 .nav-icon {
@@ -75,67 +78,26 @@
 .completed-badge {
   background: #10b981;
   color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .new-badge {
   background: #ef4444;
   color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 600;
 }
 
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid #334155;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.weather-alert {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(234, 179, 8, 0.1);
-  border: 1px solid rgba(234, 179, 8, 0.2);
-  border-radius: 8px;
-  font-size: 0.85rem;
-}
-
-.alert-icon {
-  font-size: 1rem;
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: 8px;
-  color: #fca5a5;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.logout-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fecaca;
-}
-
-.logout-icon {
-  font-size: 1rem;
-}
+/* Removed .sidebar-footer, .weather-alert, .logout-btn, and related styles */
 
 /* Scrollbar styling */
 .sidebar::-webkit-scrollbar {
@@ -161,7 +123,12 @@
     width: 100%;
     height: auto;
     position: relative;
-    transform: none !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
   }
   
   .sidebar-nav {
@@ -180,6 +147,10 @@
     font-size: 0.8rem;
   }
   
+  .nav-item:hover {
+    padding-left: 12px; /* Reset hover padding for mobile */
+  }
+  
   .nav-label {
     font-size: 0.75rem;
   }
@@ -196,6 +167,12 @@
     font-size: 0.6rem;
     padding: 1px 4px;
   }
+  
+  .completed-badge {
+    border-radius: 4px; /* Change back to square for mobile to fit better */
+    width: auto;
+    height: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -210,5 +187,13 @@
   
   .nav-icon {
     font-size: 1rem;
+  }
+  
+  .company-brand {
+    padding: 16px 20px;
+  }
+  
+  .company-brand h2 {
+    font-size: 1.2rem;
   }
 }

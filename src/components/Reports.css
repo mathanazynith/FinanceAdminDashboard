@@ -7,29 +7,30 @@
   min-height: 100vh;
 }
 
+/* Header Styles */
 .reports-header {
-  margin-bottom: 30px;
-  text-align: center;
-  position: relative;
+  margin-bottom: 24px;
 }
 
-.reports-header h1 {
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-text h1 {
   font-size: 2rem;
   margin: 0 0 8px 0;
   color: #1a1a1a;
   font-weight: 600;
 }
 
-.reports-header p {
-  margin: 4px 0;
+.header-text p {
+  margin: 0;
   color: #666;
   font-size: 1rem;
-}
-
-.reports-header .subtitle {
-  font-size: 0.9rem;
-  color: #888;
-  font-weight: 400;
 }
 
 /* Main Invoice Generation Button */
@@ -42,9 +43,9 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 16px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  white-space: nowrap;
 }
 
 .generate-invoice-main-btn:hover {
@@ -52,152 +53,97 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* Main Content Grid - Two Column Layout */
-.main-content-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 24px;
-  align-items: start;
+/* Profit & Loss Section - Single Line */
+.profit-loss-section {
+  margin-bottom: 24px;
 }
 
-.left-column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* Card Base Styles */
-.report-card {
+.profit-loss-card {
   background: white;
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.report-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+.profit-loss-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-/* Card Header Styles */
-.card-header {
-  margin-bottom: 20px;
-  text-align: left;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.card-header h3 {
+.profit-loss-title h3 {
   font-size: 1.3rem;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   color: #1a1a1a;
   font-weight: 600;
 }
 
-.card-header p {
+.profit-loss-title p {
   margin: 0;
   color: #666;
   font-size: 0.9rem;
-  line-height: 1.4;
 }
 
-/* Form Styles */
-.form-section {
+.profit-loss-content {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-field label {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-.form-field label.required::after {
-  content: " *";
-  color: #ef4444;
-}
-
-.form-select,
-.form-input,
-.date-input,
-.item-input,
-.table-input {
-  padding: 10px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: white;
-  transition: all 0.2s;
-}
-
-.form-select:focus,
-.form-input:focus,
-.date-input:focus,
-.item-input:focus,
-.table-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Date Range */
-.date-range {
+.date-range-section {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
+.date-range-section label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .date-input {
-  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  width: 120px;
   text-align: center;
 }
 
 .date-range span {
   color: #6b7280;
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 /* Export Buttons */
 .export-buttons {
   display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 8px;
 }
 
 .export-btn {
-  flex: 1;
-  padding: 10px 16px;
+  padding: 8px 16px;
   border: 2px solid;
-  border-radius: 8px;
+  border-radius: 6px;
   background: white;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-align: center;
+  white-space: nowrap;
 }
 
 .export-btn.pdf {
@@ -224,11 +170,42 @@
   transform: translateY(-1px);
 }
 
-/* Invoice History */
-.invoice-history-card {
-  background: white;
+/* Invoice History Section - Full Width */
+.invoice-history-section {
+  width: 100%;
 }
 
+.invoice-history-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+/* Card Header Styles */
+.card-header {
+  margin-bottom: 20px;
+  text-align: left;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h3 {
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.card-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Invoice History Table */
 .invoice-history-table {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -377,6 +354,52 @@
   background: #dc2626;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Form Styles for Modal */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.form-select,
+.form-input,
+.item-input,
+.table-input {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  transition: all 0.2s;
+}
+
+.form-select:focus,
+.form-input:focus,
+.item-input:focus,
+.table-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Invoice Generation in Modal */
@@ -763,14 +786,14 @@
 
 /* Enhanced Responsive Design */
 @media (max-width: 1024px) {
-  .main-content-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .profit-loss-content {
+    gap: 16px;
   }
   
-  .left-column,
-  .right-column {
-    gap: 20px;
+  .date-range-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
@@ -779,8 +802,34 @@
     padding: 16px;
   }
   
-  .reports-header h1 {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-text h1 {
     font-size: 1.75rem;
+  }
+  
+  .generate-invoice-main-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .profit-loss-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .profit-loss-content {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .date-range-section {
+    flex-direction: row;
+    align-items: center;
   }
   
   .report-card {
@@ -799,7 +848,7 @@
   
   .date-range {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
   
   .date-range span {
@@ -808,6 +857,11 @@
   
   .export-buttons {
     flex-direction: column;
+    width: 100%;
+  }
+  
+  .export-btn {
+    text-align: center;
   }
   
   .modal-content {
@@ -845,18 +899,40 @@
 }
 
 @media (max-width: 640px) {
+  .profit-loss-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .date-range-section {
+    width: 100%;
+  }
+  
+  .date-range {
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .date-input {
+    flex: 1;
+  }
+  
+  .export-buttons {
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .export-btn {
+    flex: 1;
+  }
+  
   .modal-content {
     border-radius: 12px;
   }
   
   .modal-header h2 {
     font-size: 1.3rem;
-  }
-  
-  .generate-invoice-main-btn {
-    width: 100%;
-    padding: 14px 20px;
-    font-size: 1rem;
   }
   
   .invoice-items-table table,
@@ -870,16 +946,20 @@
     padding: 12px;
   }
   
-  .reports-header h1 {
+  .header-text h1 {
     font-size: 1.5rem;
   }
   
   .report-card {
-    padding: 18px;
+    padding: 16px;
   }
   
   .card-header h3 {
     font-size: 1.2rem;
+  }
+  
+  .profit-loss-title h3 {
+    font-size: 1.1rem;
   }
   
   .form-select,
@@ -910,6 +990,14 @@
     padding: 6px 8px;
     font-size: 0.65rem;
   }
+  
+  .date-range {
+    flex-direction: column;
+  }
+  
+  .date-input {
+    width: 100%;
+  }
 }
 
 /* Small mobile devices */
@@ -919,9 +1007,22 @@
   }
   
   .report-card {
-    padding: 16px;
+    padding: 14px;
   }
   
   .card-header h3 {
-    font-size: 1.
-  }}
+    font-size: 1.1rem;
+  }
+  
+  .profit-loss-title h3 {
+    font-size: 1rem;
+  }
+  
+  .profit-loss-title p {
+    font-size: 0.8rem;
+  }
+  
+  .export-buttons {
+    flex-direction: column;
+  }
+}
