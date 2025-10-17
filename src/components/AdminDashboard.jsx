@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/auth';
+//import { authService } from '../services/auth';
 import Sidebar from './Sidebar';
 import EmployeeManagement from './EmployeeManagement';
 import ReportsBilling from './Reports';
 import CustomerManagement from './CustomerManagement';
 import CompanySettings from './CompanySettings';
+import SalaryManagement from './SalaryManagement'; // Add this import
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -128,6 +129,9 @@ const AdminDashboard = () => {
       case 'employees':
         return <EmployeeManagement />;
 
+      case 'salary': // Add this case for Salary Management
+        return <SalaryManagement />;
+
       case 'reports':
         return <ReportsBilling />;
 
@@ -185,7 +189,7 @@ const getSectionTitle = (sectionId) => {
     dashboard: 'Dashboard',
     employees: 'Employee Management',
     customers: 'Customer Management',
-    salary: 'Salary Management',
+    salary: 'Salary Management', // Add this
     transactions: 'In/Out Transactions',
     reports: 'Reports & Billing',
     settings: 'Settings'
